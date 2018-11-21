@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link, NavLink } from 'react-router-dom';
 
 import { UnControlled as CodeMirror, IInstance } from 'react-codemirror2'
 import 'codemirror/lib/codemirror.css';
@@ -7,7 +6,8 @@ import 'codemirror/theme/eclipse.css';
 require('codemirror/mode/javascript/javascript');
 
 type JsonEditorProps = {
-    Json: string
+    Json: string;
+    onChange: (json: string) => void;
 }
 
 export default class JsonEditor extends React.Component<JsonEditorProps, {}> {
@@ -26,6 +26,7 @@ export default class JsonEditor extends React.Component<JsonEditorProps, {}> {
     }
 
     public render() {
+        const { onChange } = this.props;
         return (
             <div className="editor">
                 <CodeMirror
@@ -37,6 +38,7 @@ export default class JsonEditor extends React.Component<JsonEditorProps, {}> {
                         lineNumbers: true
                     }}
                     onChange={(editor, data, value) => {
+                        onChange(value);
                     }}
                 />
             </div>

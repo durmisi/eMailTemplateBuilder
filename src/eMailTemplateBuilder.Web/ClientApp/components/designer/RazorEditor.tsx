@@ -8,7 +8,8 @@ require('codemirror/mode/htmlmixed/htmlmixed');
 
 
 type RazorEditorProps = {
-    Template: string
+    Template: string;
+    onChange: (template: string) => void;
 }
 
 export default class RazorEditor extends React.Component<RazorEditorProps, {}> {
@@ -27,6 +28,7 @@ export default class RazorEditor extends React.Component<RazorEditorProps, {}> {
     }
 
     public render() {
+        const { onChange } = this.props;
         return (
             <div className="editor">
                 <CodeMirror
@@ -38,6 +40,7 @@ export default class RazorEditor extends React.Component<RazorEditorProps, {}> {
                         lineNumbers: true
                     }}
                     onChange={(editor, data, value) => {
+                        onChange(value);
                     }}
                 />
             </div>

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link, NavLink } from 'react-router-dom';
 
 import { UnControlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/lib/codemirror.css';
@@ -11,6 +10,7 @@ require('codemirror/mode/clike/clike');
 
 type CSharpCodeEditorProps = {
     CSharpCode: string
+    onChange: (code: string) => void;
 }
 
 export default class CSharpCodeEditor extends React.Component<CSharpCodeEditorProps, {}> {
@@ -18,6 +18,7 @@ export default class CSharpCodeEditor extends React.Component<CSharpCodeEditorPr
         super(props);
     }
     public render() {
+        const { onChange } = this.props;
         return (
             <div className="editor">
                 <CodeMirror
@@ -28,6 +29,7 @@ export default class CSharpCodeEditor extends React.Component<CSharpCodeEditorPr
                         lineNumbers: true
                     }}
                     onChange={(editor, data, value) => {
+                        onChange(value);
                     }}
                 />
             </div>

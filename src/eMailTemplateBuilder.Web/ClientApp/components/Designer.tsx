@@ -17,6 +17,7 @@ import * as classNames from 'classnames';
 
 
 type DesignerState = {
+    isDirty: boolean,
     activeTab: string,
     model: {
         Name: string,
@@ -25,26 +26,36 @@ type DesignerState = {
         Json: string,
         Template: string,
     },
+    updatedModel: {
+        Name: string,
+        Code: string,
+        TemplateModel: string,
+        Json: string,
+        Template: string,
+    }
     Html:string
 }
 
 
 export class Designer extends React.Component<RouteComponentProps<{}>, DesignerState> {
 
-
     constructor(props) {
         super(props);
 
+        const model = {
+            Name: 'New Template',
+            Code: 'using System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace EmailModels\r\n{\r\n\tpublic class EmailModel\r\n\t{\r\n\t\tpublic string Name { get; set; }\r\n\t\t\r\n\t}\r\n}',
+            Template: '@model EmailModels.EmailModel\r\n\r\n<html>\r\n<body>\r\n    <p>\r\n        Your name is: \r\n    <\/p>\r\n    \r\n\t@Model.Name\r\n\t\r\n<\/body>\r\n<\/html>',
+            TemplateModel: 'EmailModels.EmailModel',
+            Json: '{\r\n  \"name\": \"Name\"\r\n}',
+        };
+
         this.toggle = this.toggle.bind(this);
         this.state = {
+            isDirty: false,
             activeTab: '1',
-            model: {
-                Name: 'New Template',
-                Code: 'using System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace EmailModels\r\n{\r\n\tpublic class EmailModel\r\n\t{\r\n\t\tpublic string Name { get; set; }\r\n\t\t\r\n\t}\r\n}',
-                Template: '@model EmailModels.EmailModel\r\n\r\n<html>\r\n<body>\r\n    <p>\r\n        Your name is: \r\n    <\/p>\r\n    \r\n\t@Model.Name\r\n\t\r\n<\/body>\r\n<\/html>',
-                TemplateModel:'EmailModels.EmailModel',
-                Json: '{\r\n  \"name\": \"Name\"\r\n}',
-            },
+            model,
+            updatedModel: model,
             Html: ''
         };
 
@@ -59,20 +70,25 @@ export class Designer extends React.Component<RouteComponentProps<{}>, DesignerS
         }
     }
 
+    syncModels = () => {
+        const updatedModel = { ... this.state.updatedModel };
+        this.setState({
+            model: updatedModel
+        })
+    }
+
     onRunClick: any = () => {
+        this.syncModels();    
 
         var headers = new Headers();
         headers.append('Accept', 'application/json');
         headers.append('Content-Type', 'application/json');
 
-
         fetch("/api/templates/build",
             {
                 method: 'post',
                 headers: headers,
-                body: JSON.stringify(
-                    this.state.model
-                )
+                body: JSON.stringify(this.state.updatedModel)
             })
            .then(
                 (response) => {
@@ -118,7 +134,10 @@ export class Designer extends React.Component<RouteComponentProps<{}>, DesignerS
                                         <Label for="templateName" className="mr-sm-2">Template Name: </Label>
                                         <Input type="text" name="templateName" id="templateName" value={this.state.model.Name} />
                                     </FormGroup>
-                                    <Button color="success" onClick={this.onRunClick} >Run</Button>
+                                    <Button color="success"
+                                        disabled={!this.state.isDirty}
+                                        onClick={this.onRunClick} >Run >
+                                        </Button>
                                 </Form>
                             </CardBody>
                         </Card>
@@ -151,7 +170,14 @@ export class Designer extends React.Component<RouteComponentProps<{}>, DesignerS
                                 <Row>
                                     <Col sm="12">
                                         <div className="editorContainer">
-                                            <CSharpCodeEditor CSharpCode={this.state.model.Code} />
+                                            <CSharpCodeEditor
+                                                CSharpCode={this.state.model.Code}
+                                                onChange={(code) => {
+                                                    const updatedModel = { ...this.state.updatedModel };
+                                                    updatedModel.Code = code;
+                                                    this.setState({ updatedModel, isDirty: true });
+                                                }}
+                                            />
                                         </div>
                                     </Col>
                                 </Row>
@@ -169,7 +195,14 @@ export class Designer extends React.Component<RouteComponentProps<{}>, DesignerS
                                                     </Input>
                                                 </FormGroup>
 
-                                                <RazorEditor Template={this.state.model.Template} />
+                                                <RazorEditor
+                                                    Template={this.state.model.Template}
+                                                    onChange={(template) => {
+                                                        const updatedModel = { ...this.state.updatedModel };
+                                                        updatedModel.Template = template;
+                                                        this.setState({ updatedModel, isDirty: true });
+                                                    }}
+                                                />
 
                                             </Form>
                                         </div>
@@ -180,7 +213,14 @@ export class Designer extends React.Component<RouteComponentProps<{}>, DesignerS
                                 <Row>
                                     <Col sm="12">
                                         <div className="editorContainer">
-                                            <JsonEditor Json={this.state.model.Json} />
+                                            <JsonEditor
+                                                Json={this.state.model.Json}
+                                                onChange={(json) => {
+                                                    const updatedModel = { ...this.state.updatedModel };
+                                                    updatedModel.Json = json;
+                                                    this.setState({ updatedModel, isDirty: true });
+                                                }}
+                                            />
                                         </div>
                                     </Col>
                                 </Row>
@@ -208,6 +248,8 @@ export class Designer extends React.Component<RouteComponentProps<{}>, DesignerS
                         </TabContent>
                     </div>
                 </div>
+
+               
 
                 {/* <LogViewer /> */}
             </div>
