@@ -1,6 +1,4 @@
-using System;
-
-namespace NGXSoft.EmailSystem.Web.Models
+namespace eMailTemplateBuilder.Web.Models
 {
     public class ErrorViewModel
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 
-namespace NGXSoft.EmailSystem.Services.EmailTemplates
+namespace eMailTemplateBuilder.Web.Services
 {
     public class CompilationResult
     {

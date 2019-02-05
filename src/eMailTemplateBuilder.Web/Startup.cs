@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using eMailTemplateBuilder.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NGXSoft.EmailSystem.Web
+namespace eMailTemplateBuilder.Web
 {
     public class Startup
     {
@@ -25,8 +22,8 @@ namespace NGXSoft.EmailSystem.Web
             services.AddMvc();
 
 
-            services.AddTransient<NGXSoft.EmailSystem.Services.EmailTemplates.ICSharpCompilationService, NGXSoft.EmailSystem.Services.EmailTemplates.CSharpCompilationService>();
-            services.AddTransient<NGXSoft.EmailSystem.Services.EmailTemplates.IEmailTemplateBuilder, NGXSoft.EmailSystem.Services.EmailTemplates.RazorLightEngineEmailTemplateBuilder>();
+            services.AddTransient<ICSharpCompilationService, CSharpCompilationService>();
+            services.AddTransient<IEmailTemplateBuilder, RazorLightEngineEmailTemplateBuilder>();
 
         }
 

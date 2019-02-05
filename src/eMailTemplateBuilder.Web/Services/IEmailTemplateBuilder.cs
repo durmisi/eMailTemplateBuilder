@@ -1,4 +1,4 @@
-﻿namespace NGXSoft.EmailSystem.Services.EmailTemplates
+﻿namespace eMailTemplateBuilder.Web.Services
 {
     public interface IEmailTemplateBuilder
     {

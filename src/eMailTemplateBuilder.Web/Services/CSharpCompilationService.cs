@@ -7,7 +7,7 @@ using System.Runtime.Loader;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace NGXSoft.EmailSystem.Services.EmailTemplates
+namespace eMailTemplateBuilder.Web.Services
 {
     public class CSharpCompilationService : ICSharpCompilationService
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using RazorLight;
 
-namespace NGXSoft.EmailSystem.Services.EmailTemplates
+namespace eMailTemplateBuilder.Web.Services
 {
     public class RazorLightEngineEmailTemplateBuilder : IEmailTemplateBuilder
     {

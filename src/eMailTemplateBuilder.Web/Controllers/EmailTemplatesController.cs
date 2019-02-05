@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NGXSoft.EmailSystem.Services.EmailTemplates;
+﻿using eMailTemplateBuilder.Web.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace NGXSoft.EmailSystem.Web.Controllers
+namespace eMailTemplateBuilder.Web.Controllers
 {
     [Route("api/templates")]
     public class EmailTemplatesController : Controller
